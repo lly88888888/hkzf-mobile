@@ -20,8 +20,14 @@ export default class Home extends Component {
     selectedTab: this.props.location.pathname,
     // 控制标签栏TabBar是否显示
     hidden: false,
-    // 是否全屏
-    fullScreen: true,
+  }
+  componentDidUpdate (prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({
+        selectedTab: this.props.location.pathname
+      })
+    }
+    
   }
   render () {
     return (
@@ -48,9 +54,6 @@ export default class Home extends Component {
                   selected={this.state.selectedTab === item.path}
                   onPress={() => {
                     this.props.history.push(item.path)
-                    this.setState({
-                      selectedTab: item.path,
-                    });
                   }}
                 >
                 </TabBar.Item>
