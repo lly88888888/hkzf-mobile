@@ -10,13 +10,15 @@
  }
  *{
    box-sizing: border-box;
-   touch-action: none;
-   margin: 0;
-   padding: 0;
  }
  h3{
    font-size: 13px;
    font-weight: normal;
+   margin: 0;
+ }
+ ul{
+   margin: 0;
+   list-style: none;
  }
 html,
 body,

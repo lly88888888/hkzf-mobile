@@ -5,6 +5,7 @@ import nav1 from '../../assets/images/nav-1.png'
 import nav2 from '../../assets/images/nav-2.png'
 import nav3 from '../../assets/images/nav-3.png'
 import nav4 from '../../assets/images/nav-4.png'
+import { getLocationCity } from '../../utils'
 import './index.scss'
 
 const FlexItemList = [
@@ -19,12 +20,24 @@ export default class Index extends Component {
     imgHeight: 212,
     isCarousel: false,
     groups: [],
-    news: []
+    news: [],
+    location: '上海',
+    area: ''
   }
-  componentDidMount () {
+  async componentDidMount () {
     this.getSwiper()   
     this.getGroups()
     this.getNews()
+    // 这是回调函数形式调用
+    // getLocationCity((data) => {
+    //   console.log(data)
+    // })
+    // 这是promise调用
+    const data = await getLocationCity()
+      this.setState({
+        location: data.label,
+        area: data.value
+      })
   }
 
   // 获取轮播图图片 发送请求
@@ -39,11 +52,9 @@ export default class Index extends Component {
   async getGroups () {
     const res = await axios.get('http://localhost:8080/home/groups', {
       params: {
-        area:'AREA%7C88cff55c-aaa4-e2e0'
+        area:this.state.area
       }
     })
-    console.log(res)
-    
     this.setState({
       groups: res.data.body,
     })  
@@ -56,8 +67,6 @@ export default class Index extends Component {
         area:'AREA%7C88cff55c-aaa4-e2e0'
       }
     })
-    console.log(res)
-    
     this.setState({
       news: res.data.body,
       isCarousel: true,
@@ -116,7 +125,7 @@ export default class Index extends Component {
           <Flex className="header" justify="between">
             <Flex className="header_left">
               <div className="header_location" onClick={()=>this.props.history.push('/citylist')}>
-                <span>上海</span>
+                <span>{this.state.location}</span>
                 <i className="iconfont icon-arrow"></i>
               </div>
               <div className="header_search">
