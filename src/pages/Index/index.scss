@@ -2,45 +2,7 @@
   .swiper_search{
     position: relative;
    touch-action: none;
-    .header{
-      width: 100%;
-      position: absolute;
-      top: 25px;
-      padding: 0 10px;
-      .header_left{
-        width: 100%;
-        height: 34px;
-        background-color: #fff;
-        padding: 5px;
-        margin: 0 10px;
-        border-radius: 5px;
-        .header_location{
-          span{
-            font-size: 14px;
-            margin-right: 3px;
-          }
-          .icon-arrow{
-            font-size: 12px;
-          }
-        }
-        .header_search{
-          margin-left: 12px;
-          border-left: 1px solid #ccc;
-          color: #9C9FA1;
-          font-size: 13px;
-          line-height: 16px;
-          .icon-seach{
-            font-size: 15px;
-            padding: 0 2px 0 12px;
-            vertical-align: middle;
-          }
-        }
-      }
-    }
-    .icon-map{
-      font-size: 25px;
-      color: #fff;
-    }
+    
   }
   .menus{
     .am-flexbox-item{

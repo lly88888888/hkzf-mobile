@@ -6,6 +6,7 @@ import nav2 from '../../assets/images/nav-2.png'
 import nav3 from '../../assets/images/nav-3.png'
 import nav4 from '../../assets/images/nav-4.png'
 import { getLocationCity } from '../../utils'
+import SearchHeader from '../../components/SearchHeader'
 import './index.scss'
 
 const FlexItemList = [
@@ -122,19 +123,7 @@ export default class Index extends Component {
             before/after Change  切换面板前/后的回调函数
           */}
           {this.renderCarousel()}
-          <Flex className="header" justify="between">
-            <Flex className="header_left">
-              <div className="header_location" onClick={()=>this.props.history.push('/citylist')}>
-                <span>{this.state.location}</span>
-                <i className="iconfont icon-arrow"></i>
-              </div>
-              <div className="header_search">
-                <i className="iconfont icon-seach"></i>
-                <span>请输入小区或地址</span>
-              </div>
-            </Flex>
-            <i className="iconfont icon-map" onClick={()=>this.props.history.push('/map')}></i>
-          </Flex>
+          <SearchHeader cityName={this.state.location}></SearchHeader>
         </div>
         {/* 菜单 */}
         <Flex className="menus">

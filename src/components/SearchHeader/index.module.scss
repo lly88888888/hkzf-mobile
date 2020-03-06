@@ -1,0 +1,42 @@
+.header{
+  width: 100%;
+  position: absolute;
+  top: 25px;
+  padding: 0 10px;
+  :global {
+    .icon-seach{
+      font-size: 15px;
+      padding: 0 2px 0 12px;
+      vertical-align: middle;
+    }
+    .icon-map{
+      font-size: 25px;
+      color: #fff;
+    }
+    .icon-arrow{
+      font-size: 12px;
+    }
+    span{
+      font-size: 14px;
+      margin-right: 3px;
+    }
+  }
+}
+
+.headerLeft{
+  width: 100%;
+  height: 34px;
+  background-color: #fff;
+  padding: 5px;
+  margin: 0 10px;
+  border-radius: 5px;
+}
+
+.headerSearch{
+  margin-left: 12px;
+  border-left: 1px solid #ccc;
+  color: #9C9FA1;
+  font-size: 13px;
+  line-height: 16px;
+}
+

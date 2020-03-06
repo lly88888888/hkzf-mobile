@@ -1,13 +1,14 @@
 .hkHome {
   margin-bottom: 50px;
 }
-:global{
-  .iconfont {
-    font-size: 20px;
-  }
-}
+
 .tabBar{
   position: fixed;
   width: 100%;
   bottom: 0;
+  :global{
+    .iconfont {
+      font-size: 20px;
+    }
+  }
 }
