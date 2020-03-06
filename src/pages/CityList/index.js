@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { NavBar, Toast } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 import axios from 'axios'
 import NavHeader from '../../components/NavHeader'
 import { getLocationCity,setCity } from '../../utils'
 import { List,AutoSizer } from 'react-virtualized'
-import './index.scss'
+import styles from './index.module.scss'
 
 // 要求: 整体是一个对象,键为索引ABCD,值为城市 
 function formatCityList (list) {
@@ -42,6 +42,12 @@ export default class CityList extends Component {
     isClick: false
   }
   async componentDidMount () {
+    this.IS_LOADED = true
+    await this.getCityList()
+  }
+
+  // 获取城市列表
+  async getCityList () {
     // 获取所有城市
     const res = await axios.get('http://localhost:8080/area/city', {
       params: {
@@ -50,24 +56,29 @@ export default class CityList extends Component {
     })
     const { curList, curIndex } = formatCityList(res.data.body)
     // 获取热门城市
-    const res1 = await axios.get('http://localhost:8080/area/hot')
-    curList['hotCity'] = res1.data.body
+    const hotCity = await axios.get('http://localhost:8080/area/hot')
+    curList['hotCity'] = hotCity.data.body
     curIndex.unshift('hotCity')
 
     // 获取当前定位
     const data = await getLocationCity()
     curList['#'] = [data]
     curIndex.unshift('#')
-    this.setState({
-      cityIndex: curIndex,
-      cityList:curList
-    }, () => {
-      // 提前计算所有行的高度 要写在获取到城市列表之后 否则报错
-      this.listRef.current.measureAllRows()
-    })
+    if (this.IS_LOADED) {
+      
+      this.setState({
+        cityIndex: curIndex,
+        cityList:curList
+      }, () => {
+        // 提前计算所有行的高度 要写在获取到城市列表之后 否则报错
+        this.listRef.current.measureAllRows()
+      })
+    }
+  }
+  componentWillUnmount () {
+    this.IS_LOADED = false
   }
   // 为了使用List组件自身的方法需要用到ref
-  
   listRef = React.createRef()
   //计算每一行的高度 
   formatRowHeight = ({index}) => {
@@ -96,7 +107,7 @@ export default class CityList extends Component {
       Toast.info('当前城市暂无房源信息!', 2)
     } else {
       setCity(name) 
-      this.props.history.push('/home')
+      this.props.history.go(-1)
     }
   }
   // 渲染react-virtualized长列表
@@ -104,10 +115,10 @@ export default class CityList extends Component {
     const { cityList, cityIndex } = this.state
     const categoryList = cityList[cityIndex[index]]
     return (
-      <div key={key} style={style} className="city">
-        <div className="title">{this.handleCategoryName(cityIndex[index])}</div>
+      <div key={key} style={style} className={styles.city}>
+        <div className={styles.title}>{this.handleCategoryName(cityIndex[index])}</div>
         {categoryList.map(item => (
-          <div className="name" key={item.value} onClick={() => this.handleClickCityName(item)}>{item.label}</div>
+          <div className={styles.name} key={item.value} onClick={() => this.handleClickCityName(item)}>{item.label}</div>
         ))}
       </div>
     )
@@ -138,7 +149,7 @@ export default class CityList extends Component {
   }
   render() {
     return (
-      <div className="hk_cityList">
+      <div className={styles.hkCityList}>
         {/* 顶部 */}
         <NavHeader>城市选择</NavHeader>
         {/* 内容区域 */}
@@ -156,11 +167,11 @@ export default class CityList extends Component {
             />
           )}
         </AutoSizer>
-        <ul className="city-index">
+        <ul className={styles.cityIndex}>
           {this.state.cityIndex.map((item,index) => (
-            <li className="city-index-item" key={item} onClick={()=>this.handleCategoryClick(index)}>
+            <li className={styles.cityIndexItem} key={item} onClick={()=>this.handleCategoryClick(index)}>
               {/* 判断选中项和索引是否相等 相等高亮 */}
-              <span className={this.state.activeIndex === index ? 'index-active':''}>{item ==='hotCity' ? '热': item}</span>
+              <span className={this.state.activeIndex === index ? styles.indexActive:''}>{item ==='hotCity' ? '热': item}</span>
             </li> 
           ))}
           

@@ -11,13 +11,18 @@
  *{
    box-sizing: border-box;
  }
+
+ h1,
+ h3,
+ ul,
+ p{
+   margin: 0;
+ }
  h3{
    font-size: 13px;
    font-weight: normal;
-   margin: 0;
  }
  ul{
-   margin: 0;
    list-style: none;
  }
 html,

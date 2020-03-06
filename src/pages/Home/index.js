@@ -5,7 +5,7 @@ import HouseList from '../HouseList'
 import Information from '../Information'
 import ProFile from '../ProFile'
 import { TabBar } from 'antd-mobile'
-import './index.scss'
+import styles from './index.module.scss'
 
 
 const tabBarItemList = [
@@ -31,14 +31,14 @@ export default class Home extends Component {
   }
   render () {
     return (
-      <div className="hk_home">
+      <div className={styles.hkHome}>
         {/* 页面分为两个模块,上面模块为动态变化的 */}
         <Route exact path="/home" component={Index}></Route>
         <Route path="/home/houselist" component={HouseList}></Route>
         <Route path="/home/information" component={Information}></Route>
         <Route path="/home/profile" component={ProFile}></Route>
         {/* 下方为tabBar 固定的 */}
-        <div className="tabBar">
+        <div className={styles.tabBar}>
           <TabBar
             unselectedTintColor="#949494"
             tintColor="#21B97A"

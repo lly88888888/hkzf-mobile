@@ -1,7 +1,9 @@
 // 主要放一些公共函数 工具之类
 import axios from 'axios'
 
-import {getCity,setCity} from './handleCity'
+import { getCity, setCity } from './handleCity'
+import { API } from './http'
+import {BASE_URL} from './url'
 // {label:'beijing',ee:'ee'}
 
 // 利用回调函数传递参数
@@ -50,5 +52,7 @@ const getLocationCity = () => {
 export {
   getLocationCity,
   getCity,
-  setCity
+  setCity,
+  API,
+  BASE_URL
 }
