@@ -1,0 +1,31 @@
+.houseList{
+  height: 45px;
+  padding: 0 10px;
+  background-color: #f6f5f6;
+  :global{
+    .icon-back {
+      font-size: 16px;
+      color: #999;
+    }
+  }
+}
+.searchHeader {
+  position: static;
+  padding: 0;
+  :global {
+    .icon-map {
+      color: #00ae66;
+    }
+    
+  }
+}
+.placeholder{
+  height: 110px;
+  background-color: #eee;
+}
+
+
+.list{
+  margin-bottom: 50px;
+}
+

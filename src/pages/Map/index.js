@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import NavHeader from '../../components/NavHeader'
+import HouseItem from '../../components/HouseItem'
 import { getLocationCity, API,BASE_URL } from '../../utils'
 import classnames from 'classnames'
+import { Toast } from 'antd-mobile'
 import styles from './index.module.scss'
 
 const BMap = window.BMap
@@ -22,6 +24,7 @@ export default class Map extends Component {
     houseList: []
   }
   async componentDidMount () {
+    Toast.loading('加载中...',0)
     const { label:cityName,value } = await getLocationCity()
     // 1 创建百度地图实例对象
     // 参数 表示容器对象的id
@@ -37,7 +40,7 @@ export default class Map extends Component {
     // 创建地址解析器实例     
     const myGeo = new BMap.Geocoder()      
     // 将地址解析结果显示在地图上，并调整地图视野    
-    myGeo.getPoint(null, point => {      
+    myGeo.getPoint(null, async point => {      
       if (point) {
         // 3 使用中心点来初始化百度地图到页面中
         // center 中心 / zoom 缩放
@@ -45,7 +48,8 @@ export default class Map extends Component {
         // 第二个参数：表示地图缩放级别
           map.centerAndZoom(point, 11)
           // 发送axios请求 获取区镇数据
-          this.renderOverlays(value)
+          await this.renderOverlays(value)
+          Toast.hide()
           //比例尺
           map.addControl(new BMap.ScaleControl())
           //平移缩放控件
@@ -77,6 +81,7 @@ export default class Map extends Component {
         const point = new BMap.Point(longitude, latitude)
         this.createOverlays(area,value,point,count,nextlevel,type)
     })
+    Toast.hide()
    }
   // 获取房源类型和缩放值
   getTypeAndZoom = () => {
@@ -123,6 +128,7 @@ export default class Map extends Component {
     label.addEventListener('click', () => {
       // 点击哪个覆盖物，就以哪个覆盖物为中心进行放大地图
       // 所以，只要把当前被点击的覆盖物的 坐标 传进来，就可以以当前点为中心放大地图了
+      Toast.loading('加载中...',0)
       this.map.centerAndZoom(point, nextlevel)
       this.timerId = setTimeout(() => {
         this.map.clearOverlays()
@@ -130,7 +136,6 @@ export default class Map extends Component {
       // 点击获取小区数据
       this.renderOverlays(value)
       this.map.setZoom(nextlevel)
-      
     })
     this.map.addOverlay(label) 
    }
@@ -158,39 +163,11 @@ export default class Map extends Component {
       isHouseShow: true,
       houseList:res.data.body.list
     })
-    console.log(this.state.houseList)
+    Toast.hide()
   }
   renderHouseList () {
     return this.state.houseList.map(item => (
-        <div className={styles.house} key={item.houseCode}>
-          <div className={styles.imgWrap}>
-            <img
-              className={styles.img}
-              src={`${BASE_URL}${item.houseImg}`}
-              alt=""
-            />
-          </div>
-          <div className={styles.content}>
-            <h3 className={styles.title}>
-              {item.title}
-            </h3>
-            <div className={styles.desc}>{item.desc}</div>
-            <div>
-            {item.tags.map((item, index) => {
-              const tagClass = index >= 3 ? 'tag3' : ('tag'+(index+1))
-              return (
-                <span className={classnames(styles.tag,styles[tagClass])} key={index}>
-                {item}
-              </span>
-                )
-              }
-              )}
-            </div>
-            <div className={styles.price}>
-              <span className={styles.priceNum}>{item.price}</span> 元/月
-            </div>
-          </div>
-      </div>
+        <HouseItem {...item} key={item.houseCode}></HouseItem>
     ))
   }
   // 创建矩形覆盖物
@@ -209,6 +186,7 @@ export default class Map extends Component {
       </div>
     `, opts)  // 创建文本标注对象
     label.addEventListener('click', (e) => {
+      Toast.loading('加载中...',0)
       this.showHouseCenter(e)
       this.getHouseList(value)
     })

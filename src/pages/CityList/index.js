@@ -42,8 +42,10 @@ export default class CityList extends Component {
     isClick: false
   }
   async componentDidMount () {
+    Toast.loading('加载中...',0)
     this.IS_LOADED = true
     await this.getCityList()
+    Toast.hide()
   }
 
   // 获取城市列表
@@ -106,7 +108,7 @@ export default class CityList extends Component {
     if (!houseResource) {
       Toast.info('当前城市暂无房源信息!', 2)
     } else {
-      setCity(name) 
+      setCity(name)
       this.props.history.go(-1)
     }
   }

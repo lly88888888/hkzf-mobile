@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Carousel, Flex, Grid} from 'antd-mobile'
+import { Carousel, Flex, Grid, Toast} from 'antd-mobile'
 import axios from 'axios'
 import nav1 from '../../assets/images/nav-1.png'
 import nav2 from '../../assets/images/nav-2.png'
@@ -34,11 +34,13 @@ export default class Index extends Component {
     //   console.log(data)
     // })
     // 这是promise调用
+    Toast.loading('加载中...',0)
     const data = await getLocationCity()
       this.setState({
         location: data.label,
         area: data.value
       })
+    Toast.hide()
   }
 
   // 获取轮播图图片 发送请求
